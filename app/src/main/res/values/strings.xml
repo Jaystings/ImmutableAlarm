@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Immutable Alarm</string>
     <string name="engTest">Test</string>
+    <string name="engStart">Start</string>
+    <string name="engPause">Pause</string>
+    <string name="engReset">Reset</string>
 </resources>
