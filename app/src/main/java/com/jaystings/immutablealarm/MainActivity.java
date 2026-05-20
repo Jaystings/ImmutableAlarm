@@ -1,4 +1,4 @@
-package com.example.immutablealarm;
+package com.jaystings.immutablealarm;
 
 import android.media.ToneGenerator;
 import android.os.Bundle;

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.immutablealarm"
+    namespace = "com.jaystings.immutablealarm"
     compileSdk {
         version = release(36)
     }
