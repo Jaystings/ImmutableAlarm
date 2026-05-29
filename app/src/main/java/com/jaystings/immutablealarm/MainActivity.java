@@ -22,18 +22,21 @@ public class MainActivity extends AppCompatActivity {
     ToneGenerator tg;
     boolean isRunning = false;
     Button btnStart;
-
     TextView txtHours;
     TextView txtMinutes;
     TextView txtSeconds;
+
+    int hours;
+    int minutes;
+    int seconds;
+
 
 
     final Handler handler = new Handler(Looper.getMainLooper());
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            // Code to execute every second:
-
+            // Code to execute every second: Tick the timer
             if(isRunning) {
                 Log.d("Timer", "Tick");
                 if (txtHours.getText().toString().equals("0")
@@ -87,17 +90,48 @@ public class MainActivity extends AppCompatActivity {
         tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD,
                 ItemTouchHelper.Callback.DEFAULT_DRAG_ANIMATION_DURATION);
     }
+    public void getNumber(char hms) throws Exception{
+        if (hms == 'h'){
+            hours = Integer.parseInt(((EditText) findViewById(R.id.txtHours)).getText().toString());
+        } else if (hms == 'm'){
+            minutes = Integer.parseInt(((EditText) findViewById(R.id.txtMinutes)).getText().toString());
+        } else if (hms == 's'){
+            seconds = Integer.parseInt(((EditText) findViewById(R.id.txtSeconds)).getText().toString());
+        }
+    }
 
     public void StartTimer(View view){
-        int hours = Integer.parseInt(((EditText)findViewById(R.id.txtHours)).getText().toString());
-        int minutes = Integer.parseInt(((EditText)findViewById(R.id.txtMinutes)).getText().toString());
-        int seconds = Integer.parseInt(((EditText)findViewById(R.id.txtSeconds)).getText().toString());
+
+        try{
+            getNumber('h');
+        } catch (Exception e) {
+            txtHours.setText("0");
+            hours = 0;
+        }
+        try{
+            getNumber('m');
+        } catch (Exception e) {
+            txtMinutes.setText("0");
+            minutes = 0;
+        }
+        try{
+            getNumber('s');
+        } catch (Exception e) {
+            txtSeconds.setText("0");
+            seconds = 0;
+        }
         if(isRunning) {
             isRunning = false;
             btnStart.setText(R.string.engStart);
+            txtHours.setEnabled(true);
+            txtMinutes.setEnabled(true);
+            txtSeconds.setEnabled(true);
         } else {
             isRunning = true;
             btnStart.setText(R.string.engPause);
+            txtHours.setEnabled(false);
+            txtMinutes.setEnabled(false);
+            txtSeconds.setEnabled(false);
         }
     }
 
