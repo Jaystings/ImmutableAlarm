@@ -171,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
         txtMinutes.setText("0");
         txtSeconds.setText("0");
         btnStart.setText(R.string.engStart);
-
     }
     public void EnableInputs(){
         txtHours.setEnabled(true);

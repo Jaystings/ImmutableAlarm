@@ -9,7 +9,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.immutablealarm"
+        applicationId = "com.jaystings.immutablealarm"
         minSdk = 23
         targetSdk = 36
         versionCode = 1
