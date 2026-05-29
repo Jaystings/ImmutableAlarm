@@ -157,21 +157,30 @@ public class MainActivity extends AppCompatActivity {
         if(isRunning) {
             isRunning = false;
             btnStart.setText(R.string.engStart);
-            txtHours.setEnabled(true);
-            txtMinutes.setEnabled(true);
-            txtSeconds.setEnabled(true);
+            EnableInputs();
         } else {
             isRunning = true;
             btnStart.setText(R.string.engPause);
-            txtHours.setEnabled(false);
-            txtMinutes.setEnabled(false);
-            txtSeconds.setEnabled(false);
+            DisableInputs();
         }
     }
-
     public void Reset(View v){
         isRunning = false;
+        EnableInputs();
+        txtHours.setText("0");
+        txtMinutes.setText("0");
+        txtSeconds.setText("0");
         btnStart.setText(R.string.engStart);
 
+    }
+    public void EnableInputs(){
+        txtHours.setEnabled(true);
+        txtMinutes.setEnabled(true);
+        txtSeconds.setEnabled(true);
+    }
+    public void DisableInputs(){
+        txtHours.setEnabled(false);
+        txtMinutes.setEnabled(false);
+        txtSeconds.setEnabled(false);
     }
 }
