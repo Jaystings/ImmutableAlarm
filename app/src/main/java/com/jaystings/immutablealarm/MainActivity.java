@@ -1,8 +1,14 @@
 package com.jaystings.immutablealarm;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.media.ToneGenerator;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
@@ -30,10 +36,13 @@ public class MainActivity extends AppCompatActivity {
     int minutes;
     int seconds;
 
+    private TimerService timerService;
+    private boolean isBound = false;
+
 
 
     final Handler handler = new Handler(Looper.getMainLooper());
-    Runnable runnable = new Runnable() {
+    Runnable tick = new Runnable() {
         @Override
         public void run() {
             // Code to execute every second: Tick the timer
@@ -61,6 +70,23 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private final ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            TimerService.LocalBinder binder = (TimerService.LocalBinder) service;
+            timerService = binder.getService();
+            isBound = true;
+
+            // Pass and run your existing Runnable inside the Service context
+            timerService.startTask(tick);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isBound = false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +104,15 @@ public class MainActivity extends AppCompatActivity {
         txtMinutes = findViewById(R.id.txtMinutes);
         txtSeconds = findViewById(R.id.txtSeconds);
 
-        handler.postDelayed(runnable, 1000);
+        // Start and Bind to the service so the tick runnable runs in background while app is open,
+        // even when the phone is locked or other apps are being used
+        Intent intent = new Intent(this, TimerService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        } else {
+            startService(intent);
+        }
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
     }
 
